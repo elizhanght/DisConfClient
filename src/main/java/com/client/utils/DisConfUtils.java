@@ -7,7 +7,8 @@ import java.util.Properties;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.springframework.util.ResourceUtils;
@@ -17,7 +18,15 @@ public class DisConfUtils {
 	public static HttpResponse getHttpClient(String url) throws ClientProtocolException, IOException{
 		
 		CloseableHttpClient client = HttpClientBuilder.create().build();
-        HttpGet request = new HttpGet(url);
+        HttpPost request = new HttpPost(url);
+        
+        String username = "";
+        String password = "";
+        String json ="{'username':'username','password':'password'}";
+        
+        StringEntity entity = new StringEntity(json);
+        request.setEntity(entity);
+        
         HttpResponse response = client.execute(request);
         
         return response;
