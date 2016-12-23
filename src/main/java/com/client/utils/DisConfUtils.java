@@ -15,14 +15,12 @@ import org.springframework.util.ResourceUtils;
 
 public class DisConfUtils {
 
-	public static HttpResponse getHttpClient(String url) throws ClientProtocolException, IOException{
+	public static HttpResponse getHttpClient(String url,String username,String password) throws ClientProtocolException, IOException{
 		
 		CloseableHttpClient client = HttpClientBuilder.create().build();
         HttpPost request = new HttpPost(url);
         
-        String username = "";
-        String password = "";
-        String json ="{'username':'username','password':'password'}";
+        String json ="{'user_name':'"+username+"','pass_word':'"+password+"'}";
         
         StringEntity entity = new StringEntity(json);
         request.setEntity(entity);

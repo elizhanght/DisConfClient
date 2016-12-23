@@ -25,7 +25,7 @@ public class DisResourcePropertySrouce extends PropertiesPropertySource{
 	 * {@link Resource#getDescription() description} of the given resource.
 	 */
 	public DisResourcePropertySrouce(String name,EncodedResource resource,DisEnum disEnum) throws IOException {
-		super(getNameForResource(resource.getResource()), loadProperties(name,resource,disEnum));
+		super(getNameForResource(resource.getResource()), loadProperties(resource,disEnum));
 	}
 	/**
 	 * Return the description for the given Resource; if the description is
@@ -40,7 +40,7 @@ public class DisResourcePropertySrouce extends PropertiesPropertySource{
 		return name;
 	}
 	
-	private static Properties loadProperties(String project,EncodedResource resource,DisEnum disEnum){
+	private static Properties loadProperties(EncodedResource resource,DisEnum disEnum){
 		
 		Properties props = new Properties();
 		
@@ -49,7 +49,7 @@ public class DisResourcePropertySrouce extends PropertiesPropertySource{
 		String type = disEnum.TYPE();
 		
 		if (type.equals(DisEnum.HTTP.TYPE())) { // 通过 HTTP 方式获取配置文件信息
-			loadFromHttp(project,filename,props);
+			loadFromHttp(filename,props);
 		} else if(type.equals(DisEnum.HTTP.TYPE())) {	// 通过 DUBBO 方式获取配置文件信息
 			loadFromDubbo(filename,props);	
 		}else if(type.equals(DisEnum.REDIS.TYPE())){	// 直接连接 Redis 获取数据
@@ -65,17 +65,19 @@ public class DisResourcePropertySrouce extends PropertiesPropertySource{
 	 * @param props
 	 */
 	@SuppressWarnings("unchecked")
-	private static void loadFromHttp(String project,String filename,Properties props){
+	private static void loadFromHttp(String filename,Properties props){
 		
         try {
             
             Properties properties = DisConfUtils.getProps("classpath:application.properties");
             
             String path = properties.getProperty("dis_conf_path");
+            String username = properties.getProperty("username");
+            String password = properties.getProperty("password");
             
-            String url = path + project + "/" + filename;
+            String url = path + "/" + filename;
             
-            HttpResponse response = DisConfUtils.getHttpClient(url);
+            HttpResponse response = DisConfUtils.getHttpClient(url,username,password);
             
             if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
             	

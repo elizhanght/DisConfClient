@@ -53,9 +53,17 @@ public class DisPropertyPlaceholderConfigurer extends PropertyPlaceholderConfigu
 
 		Properties props = new Properties();
 		
+		Properties properties = DisConfUtils.getProps("classpath:application.properties");
+        
+		String path = properties.getProperty("dis_conf_path");
+        String username = properties.getProperty("username");
+        String password = properties.getProperty("password");
+        
 		for (Resource location : this.locations) {
 			
-			HttpResponse response = DisConfUtils.getHttpClient(location.getURI().toString());
+			String url = path + location.getFilename();
+			
+			HttpResponse response = DisConfUtils.getHttpClient(url,username,password);
 			
 			if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
             	
