@@ -73,7 +73,7 @@ public class DisResourcePropertySrouce extends PropertiesPropertySource{
             
             String path = properties.getProperty("dis_conf_path");
             
-            String url = path + project + File.separator + filename;
+            String url = path + project + "/" + filename;
             
             HttpResponse response = DisConfUtils.getHttpClient(url);
             
