@@ -21,3 +21,10 @@
 		</property>
 	</bean>
 ~~~
+## 4. 在 resources 目录下添加 application.properties,内容如下：
+
+~~~
+	dis_conf_path=http://{host}:{port}/api/property/
+	user_name=admin
+	pass_word=admin
+~~~
