@@ -1,6 +1,8 @@
 package com.client.source;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
@@ -59,23 +61,25 @@ public class DisPropertyPlaceholderConfigurer extends PropertyPlaceholderConfigu
         String username = properties.getProperty("username");
         String password = properties.getProperty("password");
         
-		for (Resource location : this.locations) {
+        List<String> files = new ArrayList<String>();
+        
+        // 将所有文件名称放到list中
+        for (Resource location : this.locations) {
+        	files.add(location.getFilename());
+        }
 			
-			String url = path + location.getFilename();
-			
-			HttpResponse response = DisConfUtils.getHttpClient(url,username,password);
-			
-			if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
-            	
-                String strResult = EntityUtils.toString(response.getEntity());
-                
-                Map<String, Object> map = JSON.parseObject(strResult, Map.class);
-                
-                for (String key : map.keySet()) {
-                	props.put(key, map.get(key));
-				}
-            }
-		}
+		HttpResponse response = DisConfUtils.getHttpClient(path,username,password,files);
+		
+		if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
+        	
+            String strResult = EntityUtils.toString(response.getEntity());
+            
+            Map<String, Object> map = JSON.parseObject(strResult, Map.class);
+            
+            for (String key : map.keySet()) {
+            	props.put(key, map.get(key));
+			}
+        }
 		return props;
 	}
 

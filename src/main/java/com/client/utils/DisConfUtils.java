@@ -3,6 +3,9 @@ package com.client.utils;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 
 import org.apache.http.HttpResponse;
@@ -13,14 +16,21 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.springframework.util.ResourceUtils;
 
+import com.alibaba.fastjson.JSON;
+
 public class DisConfUtils {
 
-	public static HttpResponse getHttpClient(String url,String username,String password) throws ClientProtocolException, IOException{
+	public static HttpResponse getHttpClient(String url,String username,String password,List<String> files) throws ClientProtocolException, IOException{
 		
 		CloseableHttpClient client = HttpClientBuilder.create().build();
         HttpPost request = new HttpPost(url);
         
-        String json ="{'user_name':'"+username+"','pass_word':'"+password+"'}";
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("user_name", username);
+        map.put("pass_word", password);
+        map.put("files", files);
+        
+        String json = JSON.toJSONString(map);
         
         StringEntity entity = new StringEntity(json);
         request.setEntity(entity);

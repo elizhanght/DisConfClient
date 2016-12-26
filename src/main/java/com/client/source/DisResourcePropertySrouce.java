@@ -77,7 +77,7 @@ public class DisResourcePropertySrouce extends PropertiesPropertySource{
             
             String url = path + "/" + filename;
             
-            HttpResponse response = DisConfUtils.getHttpClient(url,username,password);
+            HttpResponse response = DisConfUtils.getHttpClient(url,username,password,null);
             
             if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
             	
