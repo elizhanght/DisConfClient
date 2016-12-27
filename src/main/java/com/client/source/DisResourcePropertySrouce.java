@@ -1,6 +1,5 @@
 package com.client.source;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.Map;
 import java.util.Properties;
@@ -8,17 +7,19 @@ import java.util.Properties;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.util.EntityUtils;
+import org.apache.log4j.Logger;
 import org.springframework.core.env.PropertiesPropertySource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.EncodedResource;
 import org.springframework.util.StringUtils;
 
 import com.alibaba.fastjson.JSON;
-import com.client.utils.DisEnum;
 import com.client.utils.DisConfUtils;
+import com.client.utils.DisEnum;
 
 public class DisResourcePropertySrouce extends PropertiesPropertySource{
 
+	static Logger logger = Logger.getLogger(DisResourcePropertySrouce.class);
 	/**
 	 * Create a PropertySource based on Properties loaded from the given resource.
 	 * The name of the PropertySource will be generated based on the
@@ -75,7 +76,9 @@ public class DisResourcePropertySrouce extends PropertiesPropertySource{
             String username = properties.getProperty("username");
             String password = properties.getProperty("password");
             
-            String url = path + "/" + filename;
+            String url = path + filename;
+            
+            logger.info("url - " + url);
             
             HttpResponse response = DisConfUtils.getHttpClient(url,username,password,null);
             
