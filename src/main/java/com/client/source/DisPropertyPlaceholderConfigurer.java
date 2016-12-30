@@ -56,10 +56,11 @@ public class DisPropertyPlaceholderConfigurer extends PropertyPlaceholderConfigu
 		Properties props = new Properties();
 		
 		Properties properties = DisConfUtils.getProps("classpath:application.properties");
-        
-		String path = properties.getProperty("dis_conf_path");
-        String username = properties.getProperty("username");
-        String password = properties.getProperty("password");
+        String activeValue = properties.getProperty("dis_profile_active");
+		
+		String path = properties.getProperty("dis_conf_path_"+activeValue);
+        String username = properties.getProperty("username_"+activeValue);
+        String password = properties.getProperty("password_"+activeValue);
         
         List<String> files = new ArrayList<String>();
         
@@ -82,5 +83,7 @@ public class DisPropertyPlaceholderConfigurer extends PropertyPlaceholderConfigu
         }
 		return props;
 	}
+	
+	
 
 }

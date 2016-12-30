@@ -70,11 +70,12 @@ public class DisResourcePropertySrouce extends PropertiesPropertySource{
 		
         try {
             
-            Properties properties = DisConfUtils.getProps("classpath:application.properties");
+        	Properties properties = DisConfUtils.getProps("classpath:application.properties");
+            String activeValue = properties.getProperty("dis_profile_active");
             
-            String path = properties.getProperty("dis_conf_path");
-            String username = properties.getProperty("username");
-            String password = properties.getProperty("password");
+            String path = properties.getProperty("dis_conf_path_"+activeValue);
+            String username = properties.getProperty("username_"+activeValue);
+            String password = properties.getProperty("password_"+activeValue);
             
             String url = path + filename;
             
